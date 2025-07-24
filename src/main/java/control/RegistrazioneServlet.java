@@ -1,26 +1,23 @@
 package control;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
-
-import model.UserDAO;
 import model.UserBean;
+import model.UserDAO;
 
-/**
- * Servlet implementation class RegistrazioneServlet
- */
+
+
+
 @WebServlet("/RegistrazioneServlet")
 public class RegistrazioneServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+     
     public RegistrazioneServlet() {
         super();
         // TODO Auto-generated constructor stub
@@ -31,17 +28,13 @@ public class RegistrazioneServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// imposta la codifica dei caratteri per gestire correttamente i caratteri speciali
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; charset=UTF-8");
-
+		
 		// prendo i parametri necessari alla registrazione dal form
 		String nome = request.getParameter("nome");
 	    String cognome = request.getParameter("cognome");
@@ -58,10 +51,32 @@ public class RegistrazioneServlet extends HttpServlet {
 	    
 	    UserDAO udao = new UserDAO();
 	    
+	    //controlli sui dati inseriti
+	    if (nome == null || cognome == null || email == null ||
+	    		password == null || confermaPassword == null ||  
+	            indirizzoSpedizione == null || cittaSpedizione == null || 
+	            capSpedizione == null || provinciaSpedizione == null) {
+	            response.sendRedirect("register.jsp?error=missing_fields");
+	            return; 
+	        }
+
+	    
+	    if (!Security.validateEmail(email)) {
+            response.sendRedirect("register.jsp?error=invalid_email");
+            return;
+        }
+	    
+	    if (!Security.validatePassword(password)) { 
+            response.sendRedirect("register.jsp?error=invalid_password");
+            return;
+        }
+	    
 	    if (!password.equals(confermaPassword)) {
              response.sendRedirect("register.jsp?error=password_mismatch");
             return;
         }
+	    
+	    
 	    
 	    // creo userbean con i setter
 	    
@@ -69,7 +84,8 @@ public class RegistrazioneServlet extends HttpServlet {
         ubean.setNome(nome);
         ubean.setCognome(cognome);
         ubean.setEmail(email);
-        ubean.setPassword(password);
+        ubean.setPassword(Security.toHash(password));
+
         
         ubean.setTelefono(telefono);
         ubean.setIndirizzoSpedizione(indirizzoSpedizione);
@@ -94,5 +110,6 @@ public class RegistrazioneServlet extends HttpServlet {
 			response.sendRedirect("register.jsp?error=db_error");
 		}
 	}
+	
 
 }

@@ -4,17 +4,38 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
 
 
 public class UserDAO implements DAOInterface<UserBean> {
-	 private static final String TABLE_NAME = "utente";
-	@Override
+	 
+	private static final String TABLE_NAME = "utente";
+	
 	public UserBean doRetrieveByKey(String code) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+				return null;
+	}
+	
+	@Override
+	public UserBean doRetrieveByEmailPassword(String email, String hashedPassword) throws SQLException {
+	    String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE Email = ? AND Password = ?";
+	    
+	    try (Connection connection = DriverManagerConnectionPool.getConnection();
+	         PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+	        
+	        preparedStatement.setString(1, email);
+	        preparedStatement.setString(2, hashedPassword);
+
+	        try (ResultSet rs = preparedStatement.executeQuery()) {
+	            if (rs.next()) {
+	                return getUtente(rs);
+	            }
+	        }
+	    }
+	    
+	    //se non trovo utenti
+	    return null;
 	}
 
 	@Override
@@ -28,7 +49,7 @@ public class UserDAO implements DAOInterface<UserBean> {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
-        // Query INSERT con TUTTI i campi NON AUTO_INCREMENT della tabella 'utente'
+        
         
         String insertSQL = "INSERT INTO " + TABLE_NAME + 
                            " (Email, Password, Nome, Cognome, Telefono, IndirizzoSpedizione, " +
@@ -36,11 +57,11 @@ public class UserDAO implements DAOInterface<UserBean> {
                            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            connection = DriverManagerConnectionPool.getConnection(); // Ottieni una connessione dal tuo pool
-            // NON chiamare connection.setAutoCommit(true) qui, il pool lo gestisce già a false.
+            connection = DriverManagerConnectionPool.getConnection(); 
+           
             preparedStatement = connection.prepareStatement(insertSQL);
 
-            // Imposta TUTTI i 12 parametri in base al tuo UserBean completo
+           
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getNome());
@@ -52,17 +73,17 @@ public class UserDAO implements DAOInterface<UserBean> {
             preparedStatement.setString(9, user.getProvinciaSpedizione());
             preparedStatement.setBoolean(10, user.isIsAdmin()); // Campo con default nel DB
 
-            preparedStatement.executeUpdate(); // Esegui l'inserimento
-            connection.commit(); // Esegui il commit della transazione
+            preparedStatement.executeUpdate(); // inserimento
+            connection.commit(); // ommit della transazione
 
         } finally {
-            // Chiudi le risorse correttamente
+            // Chiudi risorse
             try {
                 if (preparedStatement != null)
                     preparedStatement.close();
             } finally {
                 if (connection != null)
-                    DriverManagerConnectionPool.releaseConnection(connection); // Rilascia la connessione al pool
+                    DriverManagerConnectionPool.releaseConnection(connection);
             }
         }
     }
@@ -81,33 +102,35 @@ public class UserDAO implements DAOInterface<UserBean> {
 	
 	
 	public boolean isRegistrato(String email) throws SQLException {
-		Connection connection = null ; 
-		PreparedStatement preparedstatement = null ; 
-		
-		String selectSQL ;  
-		
-		if(email == null)
-			selectSQL = "select count(*) as numUtenti FROM " + TABLE_NAME ; 
-		else
-			selectSQL = "select count(*) as numUtenti FROM " + TABLE_NAME + " WHERE email = ? ; "; 
-		
-		try {
-				connection = DriverManagerConnectionPool.getConnection() ; 
-				preparedstatement = connection.prepareStatement(selectSQL) ;
-				preparedstatement.setString(1, email);
-				ResultSet rs = preparedstatement.executeQuery() ; 
-				rs.next();
-				if(rs.getInt("numUtenti") > 0) {
-					return true;
-				}
-				return false;
-		}finally {
-			try {
-				if(preparedstatement != null)
-					preparedstatement.close();
-			}finally {
-				DriverManagerConnectionPool.releaseConnection(connection);
-			}
-		}
-	}
+		String selectSQL = "SELECT COUNT(*) AS numUtenti FROM " + TABLE_NAME + " WHERE Email = ?";
+		try (Connection connection = DriverManagerConnectionPool.getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+
+	            preparedStatement.setString(1, email);
+
+	            try (ResultSet rs = preparedStatement.executeQuery()) {
+	                if (rs.next()) {
+	                    return rs.getInt("numUtenti") > 0;
+	                }
+	            }
+	        }
+	        return false;
+	    }
+	
+	
+	private UserBean getUtente(ResultSet rs) throws SQLException {
+        UserBean user = new UserBean();
+        user.setId(rs.getInt("ID_Utente"));
+        user.setEmail(rs.getString("Email"));
+        user.setPassword(rs.getString("Password")); // hashed
+        user.setNome(rs.getString("Nome"));
+        user.setCognome(rs.getString("Cognome"));
+        user.setTelefono(rs.getString("Telefono"));
+        user.setIndirizzoSpedizione(rs.getString("IndirizzoSpedizione"));
+        user.setCittaSpedizione(rs.getString("CittaSpedizione"));
+        user.setCapSpedizione(rs.getString("CAPSpedizione"));
+        user.setProvinciaSpedizione(rs.getString("ProvinciaSpedizione"));
+        user.setIsAdmin(rs.getBoolean("IsAdmin"));
+        return user;
+    }
 }
