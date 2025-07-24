@@ -1,0 +1,47 @@
+@charset "UTF-8";
+.navbar {
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    font-weight: bold;
+    font-size: 24px;
+    color: #2e5726; /* verde scuro */
+    text-decoration: none;
+    font-family: 'Patrick Hand', cursive;
+}
+
+.navbar nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    gap: 20px;
+}
+
+.navbar nav a {
+    color: #2e5726;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    padding-bottom: 3px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.navbar nav a:hover {
+    border-bottom-color: #e88f03;
+}
