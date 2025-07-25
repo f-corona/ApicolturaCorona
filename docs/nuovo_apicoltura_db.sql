@@ -87,11 +87,12 @@ CREATE TABLE IF NOT EXISTS `utente` (
   `IsAdmin` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID_Utente`),
   UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- Dump dei dati della tabella apicoltura_db.utente: ~1 rows (circa)
+-- Dump dei dati della tabella apicoltura_db.utente: ~2 rows (circa)
 REPLACE INTO `utente` (`ID_Utente`, `Email`, `Password`, `Nome`, `Cognome`, `Telefono`, `IndirizzoSpedizione`, `CittaSpedizione`, `CAPSpedizione`, `ProvinciaSpedizione`, `IsAdmin`) VALUES
-	(1, 'mario@rossi.it', 'ter.jsp', 'Mario', 'Rossi', '3401234567', 'Via della Laurea', 'Fisciano', '84084', 'SA', 0);
+	(2, 'david@parenzo.it', 'f6611c6a99d125329f1c07142ea79750d7b7fcb95e3d1e6d55dbd57aaa3651224ffc0f04322d0183f0c61acbbb4a7e3701ee39c1e763ad9aa15e408f3c867813', 'David1', 'Parenzo', '', 'Via della Zanzara', 'Valva', '84020', 'SA', 0),
+	(3, 'franco@unisa.it', 'fde0bf645471669a4d2bf54f94c527f0e8a35b9cbf9e0ac92f3632eeb9200db7dd56d4466f4881666824285ab105145bb2dba6fecd612a08029095ade18e20b3', 'Franco', 'Unisa', '', 'Via dei CFU', 'Valva', '84020', 'SA', 0);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
