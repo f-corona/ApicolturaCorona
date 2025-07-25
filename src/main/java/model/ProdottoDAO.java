@@ -39,8 +39,9 @@ public class ProdottoDAO {
 
     public List<ProdottoBean> doRetrieveAll() throws SQLException {
         List<ProdottoBean> prodotti = new ArrayList<>();
+        String sql = "SELECT * FROM prodotto WHERE QuantitaDisponibile > 0 ORDER BY Nome";
         try (Connection con = DriverManagerConnectionPool.getConnection();
-             PreparedStatement ps = con.prepareStatement("SELECT * FROM prodotto");
+             PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {

@@ -1,43 +1,27 @@
 package model;
 
-
 import java.io.Serializable;
-
 
 public class ProdottoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    // === Attributi principali ===
     private int idProdotto;
     private String nome;
     private String descrizione;
-    private double prezzo;               // Prezzo netto (senza IVA)
+    private double prezzo;
+    private double iva; // NUOVO CAMPO
     private int quantitaDisponibile;
-    private String immagineURL;
+    private boolean cancellato; // NUOVO CAMPO
+    private String immagineURL; // RINOMINATO
     private int idCategoria;
 
-    // === Attributo IVA dinamico (in percentuale, es: 10.0) ===
-    private double iva;                  // Campo ora persistito anche nel database
-
-    // === Costruttore vuoto ===
     public ProdottoBean() {
+        // Costruttore vuoto
     }
 
-    // === Costruttore completo ===
-    public ProdottoBean(int idProdotto, String nome, String descrizione, double prezzo,
-                        int quantitaDisponibile, String immagineURL, int idCategoria, double iva) {
-        this.idProdotto = idProdotto;
-        this.nome = nome;
-        this.descrizione = descrizione;
-        this.prezzo = prezzo;
-        this.quantitaDisponibile = quantitaDisponibile;
-        this.immagineURL = immagineURL;
-        this.idCategoria = idCategoria;
-        this.iva = iva;
-    }
+    // GETTER E SETTER
 
-    // === Getter e Setter ===
     public int getIdProdotto() {
         return idProdotto;
     }
@@ -62,8 +46,7 @@ public class ProdottoBean implements Serializable {
         this.descrizione = descrizione;
     }
 
-    // Prezzo netto (senza IVA)
-    public double getPrezzoNetto() {
+    public double getPrezzo() {
         return prezzo;
     }
 
@@ -71,9 +54,12 @@ public class ProdottoBean implements Serializable {
         this.prezzo = prezzo;
     }
 
-    // Prezzo lordo (con IVA)
-    public double getPrezzo() {
-        return prezzo + (prezzo * (iva / 100));
+    public double getIva() {
+        return iva;
+    }
+
+    public void setIva(double iva) {
+        this.iva = iva;
     }
 
     public int getQuantitaDisponibile() {
@@ -82,6 +68,14 @@ public class ProdottoBean implements Serializable {
 
     public void setQuantitaDisponibile(int quantitaDisponibile) {
         this.quantitaDisponibile = quantitaDisponibile;
+    }
+
+    public boolean isCancellato() {
+        return cancellato;
+    }
+
+    public void setCancellato(boolean cancellato) {
+        this.cancellato = cancellato;
     }
 
     public String getImmagineURL() {
@@ -100,25 +94,10 @@ public class ProdottoBean implements Serializable {
         this.idCategoria = idCategoria;
     }
 
-    public double getIVA() {
-        return iva;
-    }
-
-    public void setIVA(double iva) {
-        this.iva = iva;
-    }
-
-    // === toString ===
     @Override
     public String toString() {
-        return "ProdottoBean{" +
-                "idProdotto=" + idProdotto +
-                ", nome='" + nome + '\'' +
-                ", prezzoNetto=" + prezzo +
-                ", IVA=" + iva +
-                ", prezzoIvato=" + getPrezzo() +
-                ", categoria=" + idCategoria +
-                '}';
+        return "ProdottoBean [idProdotto=" + idProdotto + ", nome=" + nome + ", descrizione=" + descrizione
+                + ", prezzo=" + prezzo + ", iva=" + iva + ", quantitaDisponibile=" + quantitaDisponibile
+                + ", cancellato=" + cancellato + ", immagineURL=" + immagineURL + ", idCategoria=" + idCategoria + "]";
     }
-
 }
