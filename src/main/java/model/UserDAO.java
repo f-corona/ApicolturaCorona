@@ -71,7 +71,7 @@ public class UserDAO implements DAOInterface<UserBean> {
             preparedStatement.setString(7, user.getCittaSpedizione());
             preparedStatement.setString(8, user.getCapSpedizione());
             preparedStatement.setString(9, user.getProvinciaSpedizione());
-            preparedStatement.setBoolean(10, user.isIsAdmin()); // Campo con default nel DB
+            preparedStatement.setBoolean(10, user.isAdmin()); // Campo con default nel DB
 
             preparedStatement.executeUpdate(); // inserimento
             connection.commit(); // ommit della transazione

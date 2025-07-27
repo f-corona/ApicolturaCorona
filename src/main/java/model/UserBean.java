@@ -120,7 +120,7 @@ public class UserBean {
         this.provinciaSpedizione = provinciaSpedizione;
     }
 
-    public boolean isIsAdmin() {
+    public boolean isAdmin() {
         return isAdmin;
     }
 
