@@ -17,8 +17,8 @@ public class UserDAO implements DAOInterface<UserBean> {
 				return null;
 	}
 	
-	@Override
-	public UserBean doRetrieveByEmailPassword(String email, String hashedPassword) throws SQLException {
+
+public UserBean doRetrieveByEmailPassword(String email, String hashedPassword) throws SQLException {
 	    String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE Email = ? AND Password = ?";
 	    
 	    try (Connection connection = DriverManagerConnectionPool.getConnection();

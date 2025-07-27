@@ -9,5 +9,5 @@ public interface DAOInterface<T> {
 	public void doSave(T product) throws SQLException; 
 	public void doUpdate(T product) throws SQLException ;
 	public boolean doDelete(String code) throws SQLException ; 
-	public T doRetrieveByEmailPassword(String email, String hashedPassword) throws SQLException;
+	
 }
