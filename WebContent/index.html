@@ -19,8 +19,11 @@
                 <li><a href="#chi-siamo">Chi Siamo</a></li>
                 <li><a href="#mieli">I Nostri Mieli</a></li>
                 <li><a href="#contatti">Contatti</a></li>
-                <li><a href="login.jsp">Login</a></li>
-                <li><a href="register.jsp">Registrati</a></li>
+                 <% if (session.getAttribute("currentUser") == null) { %>
+                        <li><a href="login.jsp">Login</a></li>
+                        <li><a href="register.jsp">Registrati</a></li>
+                    <% } else { %>
+                        <li><a href="LogoutServlet">Logout</a></li>
             </ul>
         </nav>
     </div>
