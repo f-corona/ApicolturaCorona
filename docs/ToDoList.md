@@ -5,7 +5,7 @@ NB: Il sito andrà mostrato in funzione nell’ambiente di produzione, non in qu
 *work in progress*
 
 1. Il cliente (che sia registrato o non) deve poter inserire prodotti nel carrello, variarne la quantità, rimuoverli dal carrello e svuotare il carrello
-2. Il cliente deve potersi registrare, fare il login e logout
+2. ~~Il cliente deve potersi registrare, fare il login e logout~~
 3. Il cliente registrato deve poter effettuare l’ordine dei prodotti nel carrello (specificando le informazioni necessarie per la spedizione e il pagamento)
     Una volta confermato l'ordine va svuotato il carrello e deve essere possibile per il cliente registrato visualizzare l'ordine nell'elenco degli ordini da lui effettuati
 4. Va prevista la figura dell'amministratore e delle pagine a lui dedicate, accessibili solo dopo autenticazione (è quindi necessario consentire il login e logout dell’amministratore) 
