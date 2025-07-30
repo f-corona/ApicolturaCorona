@@ -26,6 +26,12 @@ public class LoginServlet extends HttpServlet {
        
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	//controllo se l'utente è già loggato
+    	HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("currentUser") != null) {
+            response.sendRedirect("catalogo.jsp");
+            return;
+        }
         doPost(request, response);
     }
 
@@ -52,18 +58,20 @@ public class LoginServlet extends HttpServlet {
         try {
             // login cercando email e pass
             user = userDAO.doRetrieveByEmailPassword(email, hashedPassword); 
-
-            if (user != null) { //se il login è diverso da null (quindi è riuscito)
-                
-                HttpSession session = request.getSession();
-                session.setAttribute("currentUser", user); // salviamo userbean in sessione
-                //session.setAttribute("isAdmin", user.isIsAdmin()); 
-                //salviamo se è un admin, può servire per riempire il catalogo
-                response.sendRedirect("catalogo.jsp"); // relink a pagina del catalogo
-            } else {
-                
-                response.sendRedirect("login.jsp?error=invalid_credentials"); //se credenziali errate errore
-            }
+            	// salviamo userbean in sessione
+                if (user != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("currentUser", user);
+                    session.setMaxInactiveInterval(2 * 60 * 60);
+                    
+                    if (user.isAdmin()) {
+                        response.sendRedirect("admin/dashboard.jsp");
+                    } else {
+                        response.sendRedirect("catalogo.jsp");
+                    }
+                } else {
+                    response.sendRedirect("login.jsp?error=invalid_credentials");
+                }
 
         } catch (SQLException e) {
             // in caso di errori del db

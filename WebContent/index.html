@@ -14,18 +14,15 @@
     <header class="navbar">
     <div class="container">
         <a href="#" class="nav-brand">Apicoltura Corona</a>
-        <nav>
-            <ul>
-                <li><a href="#chi-siamo">Chi Siamo</a></li>
-                <li><a href="#mieli">I Nostri Mieli</a></li>
-                <li><a href="#contatti">Contatti</a></li>
-                 <% if (session.getAttribute("currentUser") == null) { %>
-                        <li><a href="login.jsp">Login</a></li>
-                        <li><a href="register.jsp">Registrati</a></li>
-                    <% } else { %>
-                        <li><a href="LogoutServlet">Logout</a></li>
-            </ul>
-        </nav>
+     <nav>
+    <ul>
+        <li><a href="#chi-siamo">Chi Siamo</a></li>
+        <li><a href="#mieli">I Nostri Mieli</a></li>
+        <li><a href="#contatti">Contatti</a></li>
+         <li><a href="login.jsp">Login</a></li>
+         <li><a href="register.jsp">Registrati</a></li>
+    </ul>
+</nav>
     </div>
 </header>
 
