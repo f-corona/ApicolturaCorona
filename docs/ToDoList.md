@@ -33,6 +33,6 @@ NB: Il sito andrà mostrato in funzione nell’ambiente di produzione, non in qu
 15. *Strutturare correttamente il database, ovvero:*
     *Se viene modificato il prezzo di un prodotto dopo l’acquisto di un utente, l'ordine del cliente mantiene il prezzo di acquisto (non il nuovo prezzo)*
     *Se l'amministratore cancella un prodotto, non deve scomparire dagli ordini effettuati di nessun cliente*
-16. Usare correttamente Git (ovvero fare commit spesso!)
+16. ~~Usare correttamente Git (ovvero fare commit spesso!)~~
 17. A corredo del progetto va presentato il documento di website design (assicurarsi che sia consistente col sito web presentato)
     Essendo un documento di design, la sua compilazione dovrebbe precedere lo sviluppo del sito web 
