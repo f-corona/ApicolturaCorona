@@ -25,6 +25,7 @@
             <a href="index.html" class="nav-brand">Apicoltura Corona</a>
             <nav>
                 <ul>
+               		<li><a href="index.html">Home</a></li>
                     <li><a href="catalogo.jsp">Catalogo</a></li>
                     <li><a href="carrello.jsp">Carrello</a></li>
                     <li><a href="LogoutServlet">Logout</a></li>
