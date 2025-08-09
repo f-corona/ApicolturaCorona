@@ -7,136 +7,107 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import jakarta.servlet.RequestDispatcher;
 
 import model.CarrelloBean;
 import model.ProductBean;
 import model.ProductDAO;
 
-/**
- * Servlet implementation class CarrelloServlet
- */
 @WebServlet("/CarrelloServlet")
 public class CarrelloServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CarrelloServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        CarrelloBean carrello = (CarrelloBean) request.getSession().getAttribute("carrello");
-        if (carrello == null) {
-            carrello = new CarrelloBean();
-            request.getSession().setAttribute("carrello", carrello);
-        }
-
-        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/carrello.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("carrello.jsp");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        
         String action = request.getParameter("action");
         
-        if (action != null) {
-            if (action.equalsIgnoreCase("add")) {
-                aggiungiProdotto(request, response);
-            } else if (action.equalsIgnoreCase("remove")) {
-                rimuoviProdotto(request, response);
-            } else if (action.equalsIgnoreCase("clear")) {
-                svuotaCarrello(request, response);
-            }
+        if ("add".equals(action)) {
+            aggiungiProdotto(request, response);
+        } else if ("remove".equals(action)) {
+            rimuoviProdotto(request, response);
+        } else if ("clear".equals(action)) {
+            svuotaCarrello(request, response);
+        } else if ("decrease".equals(action)) {
+            decrementaProdotto(request, response);
         }
     }
-    
+
     private void aggiungiProdotto(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
+        int idProdotto = Integer.parseInt(request.getParameter("idProdotto"));
+        
+        CarrelloBean carrello = getCarrello(request);
+        
         try {
-            int idProdotto = Integer.parseInt(request.getParameter("idProdotto"));
-            
             ProductDAO productDAO = new ProductDAO();
             ProductBean prodotto = productDAO.doRetrieveByKey(String.valueOf(idProdotto));
             
-            if (prodotto != null && prodotto.getQuantitaDisponibile() > 0) {
-                CarrelloBean carrello = (CarrelloBean) request.getSession().getAttribute("carrello");
-                if (carrello == null) {
-                    carrello = new CarrelloBean();
-                    request.getSession().setAttribute("carrello", carrello);
-                }
-                
-                // Imposta quantità a 1 per il carrello
+            if (prodotto != null) {
                 ProductBean prodottoCarrello = new ProductBean();
                 prodottoCarrello.setId(prodotto.getId());
                 prodottoCarrello.setNome(prodotto.getNome());
                 prodottoCarrello.setDescrizione(prodotto.getDescrizione());
                 prodottoCarrello.setPrezzo(prodotto.getPrezzo());
                 prodottoCarrello.setIva(prodotto.getIva());
-                prodottoCarrello.setQuantitaDisponibile(1); // Quantità nel carrello
+                prodottoCarrello.setQuantitaDisponibile(1);
                 prodottoCarrello.setImmagineURL(prodotto.getImmagineURL());
                 prodottoCarrello.setIdCategoria(prodotto.getIdCategoria());
                 
                 if (!carrello.isPresente(prodottoCarrello)) {
                     carrello.addProduct(prodottoCarrello);
                 }
-                
-                request.getSession().setAttribute("carrello", carrello);
             }
-            
-            response.sendRedirect("catalogo.jsp");
-            
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("catalogo.jsp?error=db_error");
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            response.sendRedirect("catalogo.jsp?error=invalid_id");
         }
+        
+        //controllo per evitare di essere rimandati al catalogo quando sto nel carrello
+        String referer = request.getHeader("Referer");
+        if (referer != null && referer.contains("carrello.jsp")) {
+            response.sendRedirect("carrello.jsp");
+        } else {
+            response.sendRedirect("catalogo.jsp");
+        }
+    }
+    
+    private void decrementaProdotto(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        int idProdotto = Integer.parseInt(request.getParameter("idProdotto"));
+        CarrelloBean carrello = getCarrello(request);
+        carrello.decrementaQuantita(idProdotto);
+        response.sendRedirect("carrello.jsp");
     }
     
     private void rimuoviProdotto(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        try {
-            int idProdotto = Integer.parseInt(request.getParameter("idProdotto"));
-            
-            CarrelloBean carrello = (CarrelloBean) request.getSession().getAttribute("carrello");
-            if (carrello != null) {
-                carrello.rimuovi(idProdotto);
-                request.getSession().setAttribute("carrello", carrello);
-            }
-            
-            response.sendRedirect("carrello.jsp");
-            
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            response.sendRedirect("carrello.jsp?error=invalid_id");
-        }
+        int idProdotto = Integer.parseInt(request.getParameter("idProdotto"));
+        CarrelloBean carrello = getCarrello(request);
+        carrello.rimuovi(idProdotto);
+        response.sendRedirect("carrello.jsp");
     }
     
     private void svuotaCarrello(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
+        CarrelloBean carrello = getCarrello(request);
+        carrello.svuotaCarrello();
+        response.sendRedirect("carrello.jsp");
+    }
+    
+    private CarrelloBean getCarrello(HttpServletRequest request) {
         CarrelloBean carrello = (CarrelloBean) request.getSession().getAttribute("carrello");
-        if (carrello != null) {
-            carrello.svuotaCarrello();
+        if (carrello == null) {
+            carrello = new CarrelloBean();
             request.getSession().setAttribute("carrello", carrello);
         }
-        
-        response.sendRedirect("carrello.jsp");
+        return carrello;
     }
 }

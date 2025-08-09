@@ -61,9 +61,9 @@
                     
                     <div>
                         <form action="CarrelloServlet" method="post" style="display:inline;">
-                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="action" value="decrease">
                             <input type="hidden" name="idProdotto" value="<%= prodotto.getId() %>">
-                            <input type="submit" value="Rimuovi" style="background-color: red; color: white;">
+                            <input type="submit" value="-">
                         </form>
                         
                         <span>Quantità: <%= prodotto.getQuantitaDisponibile() %></span>
@@ -71,7 +71,13 @@
                         <form action="CarrelloServlet" method="post" style="display:inline;">
                             <input type="hidden" name="action" value="add">
                             <input type="hidden" name="idProdotto" value="<%= prodotto.getId() %>">
-                            <input type="submit" value="+1">
+                            <input type="submit" value="+">
+                        </form>
+                        
+                        <form action="CarrelloServlet" method="post" style="display:inline;">
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="idProdotto" value="<%= prodotto.getId() %>">
+                            <input type="submit" value="Rimuovi" style="background-color: red; color: white;">
                         </form>
                     </div>
                 </div>

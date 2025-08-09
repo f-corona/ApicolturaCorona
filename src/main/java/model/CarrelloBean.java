@@ -23,64 +23,68 @@ public class CarrelloBean implements Serializable {
     
     // Vede se il prodotto è presente nel carrello
     public boolean isPresente(ProductBean prod) {
-        int i = 0;
-        boolean trovato = false;
-        
-        while (i < prodotti.size() && !trovato) {
+        for (int i = 0; i < prodotti.size(); i++) {
             if (prod.getId() == prodotti.get(i).getId()) {
-                incrementaQuantita(prod);
-                trovato = true;
+                prodotti.get(i).setQuantitaDisponibile(prodotti.get(i).getQuantitaDisponibile() + 1);
+                return true;
             }
-            i++;
         }
-        return trovato;
+        return false;
     }
     
     // Restituisce indice del prodotto con quell'ID
     public int indice(int id) {
-        int i = 0;
-        int trovato = 0;
-        
-        while (i < this.getProdotti().size()) {
-            if (this.getProdotti().get(i).getId() == id) {
-                trovato = i;
+        for (int i = 0; i < prodotti.size(); i++) {
+            if (prodotti.get(i).getId() == id) {
+                return i;
             }
-            i++;
         }
-        return trovato;
+        return -1;
     }
     
     // Rimuove prodotto dal carrello
     public void rimuovi(int id) {
-        int i = 0;
-        while (i < this.prodotti.size()) {
-            if (this.getProdotti().get(i).getId() == id) {
-                this.getProdotti().remove(i);
+        for (int i = 0; i < prodotti.size(); i++) {
+            if (prodotti.get(i).getId() == id) {
+                prodotti.remove(i);
+                break;
             }
-            i++;
         }
     }
     
-   
-    public void incrementaQuantita(ProductBean prod) {
-        prod.setQuantitaDisponibile(prod.getQuantitaDisponibile() + 1);
+    // Incrementa quantità di un prodotto specifico
+    public void incrementaQuantita(int id) {
+        for (ProductBean prodotto : prodotti) {
+            if (prodotto.getId() == id) {
+                prodotto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile() + 1);
+                return;
+            }
+        }
     }
     
-
-    public void decrementaQuantita(ProductBean prod) {
-        prod.setQuantitaDisponibile(prod.getQuantitaDisponibile() - 1);
+    // Decrementa quantità di un prodotto specifico
+    public void decrementaQuantita(int id) {
+        for (int i = 0; i < prodotti.size(); i++) {
+            if (prodotti.get(i).getId() == id) {
+                ProductBean prodotto = prodotti.get(i);
+                if (prodotto.getQuantitaDisponibile() > 1) {
+                    prodotto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile() - 1);
+                } else {
+                    prodotti.remove(i);
+                }
+                return;
+            }
+        }
     }
     
-
     public void addProduct(ProductBean prod) {
         prodotti.add(prod);
     }
     
-   
     public void deleteProduct(ProductBean prod) {
-        for (ProductBean prodotto1 : prodotti) {
-            if (prodotto1.getId() == prod.getId()) {
-                prodotti.remove(prodotto1);
+        for (int i = 0; i < prodotti.size(); i++) {
+            if (prodotti.get(i).getId() == prod.getId()) {
+                prodotti.remove(i);
                 break;
             }
         }
@@ -89,7 +93,6 @@ public class CarrelloBean implements Serializable {
     public void svuotaCarrello() {
         prodotti.clear();
     }
-    
     
     public ProductBean getItemIndex(int i) {
         return prodotti.get(i);
