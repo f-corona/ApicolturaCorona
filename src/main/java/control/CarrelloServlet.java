@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import model.CarrelloBean;
@@ -24,24 +25,32 @@ public class CarrelloServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        String ajaxRequest = request.getHeader("x-requested-with");
+        boolean isAjax = (ajaxRequest != null);
+        
+        if (isAjax) {
+            response.setContentType("application/json");
+        }
+        
         String action = request.getParameter("action");
         
         if ("add".equals(action)) {
-            aggiungiProdotto(request, response);
+            aggiungiProdotto(request, response, isAjax);
         } else if ("remove".equals(action)) {
-            rimuoviProdotto(request, response);
+            rimuoviProdotto(request, response, isAjax);
         } else if ("clear".equals(action)) {
-            svuotaCarrello(request, response);
+            svuotaCarrello(request, response, isAjax);
         } else if ("decrease".equals(action)) {
-            decrementaProdotto(request, response);
+            decrementaProdotto(request, response, isAjax);
+        } else if ("count".equals(action)) {
+            getCount(request, response, isAjax);
         }
     }
 
-    private void aggiungiProdotto(HttpServletRequest request, HttpServletResponse response) 
+    private void aggiungiProdotto(HttpServletRequest request, HttpServletResponse response, boolean isAjax) 
             throws ServletException, IOException {
         
         int idProdotto = Integer.parseInt(request.getParameter("idProdotto"));
-        
         CarrelloBean carrello = getCarrello(request);
         
         try {
@@ -49,17 +58,26 @@ public class CarrelloServlet extends HttpServlet {
             ProductBean prodotto = productDAO.doRetrieveByKey(String.valueOf(idProdotto));
             
             if (prodotto != null) {
-                ProductBean prodottoCarrello = new ProductBean();
-                prodottoCarrello.setId(prodotto.getId());
-                prodottoCarrello.setNome(prodotto.getNome());
-                prodottoCarrello.setDescrizione(prodotto.getDescrizione());
-                prodottoCarrello.setPrezzo(prodotto.getPrezzo());
-                prodottoCarrello.setIva(prodotto.getIva());
-                prodottoCarrello.setQuantitaDisponibile(1);
-                prodottoCarrello.setImmagineURL(prodotto.getImmagineURL());
-                prodottoCarrello.setIdCategoria(prodotto.getIdCategoria());
+                boolean trovato = false;
+                for (ProductBean p : carrello.getProdotti()) {
+                    if (p.getId() == idProdotto) {
+                        p.setQuantitaDisponibile(p.getQuantitaDisponibile() + 1);
+                        trovato = true;
+                        break;
+                    }
+                }
                 
-                if (!carrello.isPresente(prodottoCarrello)) {
+                if (!trovato) {
+                    ProductBean prodottoCarrello = new ProductBean();
+                    prodottoCarrello.setId(prodotto.getId());
+                    prodottoCarrello.setNome(prodotto.getNome());
+                    prodottoCarrello.setDescrizione(prodotto.getDescrizione());
+                    prodottoCarrello.setPrezzo(prodotto.getPrezzo());
+                    prodottoCarrello.setIva(prodotto.getIva());
+                    prodottoCarrello.setQuantitaDisponibile(1);
+                    prodottoCarrello.setImmagineURL(prodotto.getImmagineURL());
+                    prodottoCarrello.setIdCategoria(prodotto.getIdCategoria());
+                    
                     carrello.addProduct(prodottoCarrello);
                 }
             }
@@ -67,39 +85,66 @@ public class CarrelloServlet extends HttpServlet {
             e.printStackTrace();
         }
         
-        //controllo per evitare di essere rimandati al catalogo quando sto nel carrello
-        String referer = request.getHeader("Referer");
-        if (referer != null && referer.contains("carrello.jsp")) {
-            response.sendRedirect("carrello.jsp");
-        } else {
-            response.sendRedirect("catalogo.jsp");
-        }
+        handleResponse(request, response, isAjax);
     }
     
-    private void decrementaProdotto(HttpServletRequest request, HttpServletResponse response) 
+    private void decrementaProdotto(HttpServletRequest request, HttpServletResponse response, boolean isAjax) 
             throws ServletException, IOException {
         
         int idProdotto = Integer.parseInt(request.getParameter("idProdotto"));
         CarrelloBean carrello = getCarrello(request);
         carrello.decrementaQuantita(idProdotto);
-        response.sendRedirect("carrello.jsp");
+        
+        handleResponse(request, response, isAjax);
     }
     
-    private void rimuoviProdotto(HttpServletRequest request, HttpServletResponse response) 
+    private void rimuoviProdotto(HttpServletRequest request, HttpServletResponse response, boolean isAjax) 
             throws ServletException, IOException {
         
         int idProdotto = Integer.parseInt(request.getParameter("idProdotto"));
         CarrelloBean carrello = getCarrello(request);
         carrello.rimuovi(idProdotto);
-        response.sendRedirect("carrello.jsp");
+        
+        handleResponse(request, response, isAjax);
     }
     
-    private void svuotaCarrello(HttpServletRequest request, HttpServletResponse response) 
+    private void svuotaCarrello(HttpServletRequest request, HttpServletResponse response, boolean isAjax) 
             throws ServletException, IOException {
         
         CarrelloBean carrello = getCarrello(request);
         carrello.svuotaCarrello();
-        response.sendRedirect("carrello.jsp");
+        
+        handleResponse(request, response, isAjax);
+    }
+    
+    private void getCount(HttpServletRequest request, HttpServletResponse response, boolean isAjax) 
+            throws ServletException, IOException {
+        
+        CarrelloBean carrello = getCarrello(request);
+        int count = carrello.getQuantitaTotale();
+        
+        if (isAjax) {
+            PrintWriter out = response.getWriter();
+            String jsonResponse = "{\"status\":\"success\",\"count\":" + count + "}";
+            out.print(jsonResponse);
+            out.flush();
+        }
+    }
+    
+    private void handleResponse(HttpServletRequest request, HttpServletResponse response, boolean isAjax) 
+            throws ServletException, IOException {
+        
+        if (isAjax) {
+            CarrelloBean carrello = getCarrello(request);
+            int count = carrello.getQuantitaTotale();
+            
+            PrintWriter out = response.getWriter();
+            String jsonResponse = "{\"status\":\"success\",\"count\":" + count + "}";
+            out.print(jsonResponse);
+            out.flush();
+        } else {
+            response.sendRedirect("carrello.jsp");
+        }
     }
     
     private CarrelloBean getCarrello(HttpServletRequest request) {

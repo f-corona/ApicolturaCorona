@@ -11,105 +11,66 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.UserBean;
 import model.UserDAO;
 
-
-
-
 @WebServlet("/RegistrazioneServlet")
 public class RegistrazioneServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
      
     public RegistrazioneServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Redirect al form di registrazione
+        response.sendRedirect("register.jsp");
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// prendo i parametri necessari alla registrazione dal form
-		String nome = request.getParameter("nome");
-	    String cognome = request.getParameter("cognome");
-		String email = request.getParameter("email");
-	    String password = request.getParameter("password");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nome = request.getParameter("nome");
+        String cognome = request.getParameter("cognome");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
         String confermaPassword = request.getParameter("confermaPassword");
-
         String telefono = request.getParameter("telefono");
         String indirizzoSpedizione = request.getParameter("indirizzoSpedizione");
         String cittaSpedizione = request.getParameter("cittaSpedizione");
         String capSpedizione = request.getParameter("capSpedizione");
         String provinciaSpedizione = request.getParameter("provinciaSpedizione");
-        boolean isAdmin = false; // registrato di default non è admin
-	    
-	    UserDAO udao = new UserDAO();
-	    
-	    //controlli sui dati inseriti
-	    if (nome == null || cognome == null || email == null ||
-	    		password == null || confermaPassword == null ||  
-	            indirizzoSpedizione == null || cittaSpedizione == null || 
-	            capSpedizione == null || provinciaSpedizione == null) {
-	            response.sendRedirect("register.jsp?error=missing_fields");
-	            return; 
-	        }
-
-	    
-	    if (!Security.validateEmail(email)) {
-            response.sendRedirect("register.jsp?error=invalid_email");
-            return;
-        }
-	    
-	    if (!Security.validatePassword(password)) { 
-            response.sendRedirect("register.jsp?error=invalid_password");
-            return;
-        }
-	    
-	    if (!password.equals(confermaPassword)) {
-             response.sendRedirect("register.jsp?error=password_mismatch");
-            return;
-        }
-	    
-	    
-	    
-	    // creo userbean con i setter
-	    
-	    UserBean ubean = new UserBean();
-        ubean.setNome(nome);
-        ubean.setCognome(cognome);
-        ubean.setEmail(email);
-        ubean.setPassword(Security.toHash(password));
-
         
-        ubean.setTelefono(telefono);
-        ubean.setIndirizzoSpedizione(indirizzoSpedizione);
-        ubean.setCittaSpedizione(cittaSpedizione);
-        ubean.setCapSpedizione(capSpedizione);
-        ubean.setProvinciaSpedizione(provinciaSpedizione);
-                
-        ubean.setIsAdmin(isAdmin);
-	    
-	    try {
-	    	// Se la mail non è già presente nel db, la salva
-			if(!udao.isRegistrato(email)) {
-				udao.doSave(ubean);
-				response.sendRedirect("catalogo.jsp"); // Reindirizza al catalogo o a una pagina di login
-			}else {
-				// Invia alla registrazione settando il parametro ar (already registered)
-				response.sendRedirect("register.jsp?ar=y");
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-            // In caso di errore SQL generico, reindirizza al form con un errore DB
-			response.sendRedirect("register.jsp?error=db_error");
-		}
-	}
-	
+        UserDAO userDAO = new UserDAO();
+        
+        if (nome == null || cognome == null || email == null || password == null || 
+            confermaPassword == null || indirizzoSpedizione == null || 
+            cittaSpedizione == null || capSpedizione == null || provinciaSpedizione == null) {
+            response.sendRedirect("register.jsp?error=missing_fields");
+            return; 
+        }
 
+        if (!password.equals(confermaPassword)) {
+            response.sendRedirect("register.jsp?error=password_mismatch");
+            return;
+        }
+        
+        UserBean user = new UserBean();
+        user.setNome(nome);
+        user.setCognome(cognome);
+        user.setEmail(email);
+        user.setPassword(Security.toHash(password));
+        user.setTelefono(telefono);
+        user.setIndirizzoSpedizione(indirizzoSpedizione);
+        user.setCittaSpedizione(cittaSpedizione);
+        user.setCapSpedizione(capSpedizione);
+        user.setProvinciaSpedizione(provinciaSpedizione);
+        user.setIsAdmin(false);
+        
+        try {
+            if (!userDAO.isRegistrato(email)) {
+                userDAO.doSave(user);
+                response.sendRedirect("catalogo.jsp");
+            } else {
+                response.sendRedirect("register.jsp?error=email_exists");
+            }
+        } catch (SQLException e) {
+            response.sendRedirect("register.jsp?error=db_error");
+        }
+    }
 }

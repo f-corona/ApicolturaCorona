@@ -16,18 +16,22 @@ public class CategoryDAO implements DAOInterface<CategoryBean> {
     public CategoryBean doRetrieveByKey(String code) throws SQLException {
         String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE ID_Categoria = ?";
         
-        try (Connection connection = DriverManagerConnectionPool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
-            
-            preparedStatement.setInt(1, Integer.parseInt(code));
-            
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                if (rs.next()) {
-                    return getCategoria(rs);
-                }
-            }
+        Connection connection = DriverManagerConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+        preparedStatement.setInt(1, Integer.parseInt(code));
+        
+        ResultSet rs = preparedStatement.executeQuery();
+        CategoryBean categoria = null;
+        
+        if (rs.next()) {
+            categoria = getCategoria(rs);
         }
-        return null;
+        
+        rs.close();
+        preparedStatement.close();
+        DriverManagerConnectionPool.releaseConnection(connection);
+        
+        return categoria;
     }
     
     @Override
@@ -39,100 +43,45 @@ public class CategoryDAO implements DAOInterface<CategoryBean> {
             selectSQL += " ORDER BY " + order;
         }
         
-        try (Connection connection = DriverManagerConnectionPool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
-            
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    categorie.add(getCategoria(rs));
-                }
-            }
+        Connection connection = DriverManagerConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+        ResultSet rs = preparedStatement.executeQuery();
+        
+        while (rs.next()) {
+            categorie.add(getCategoria(rs));
         }
+        
+        rs.close();
+        preparedStatement.close();
+        DriverManagerConnectionPool.releaseConnection(connection);
+        
         return categorie;
     }
     
     @Override
     public void doSave(CategoryBean categoria) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        
         String insertSQL = "INSERT INTO " + TABLE_NAME + " (Nome) VALUES (?)";
         
-        try {
-            connection = DriverManagerConnectionPool.getConnection();
-            preparedStatement = connection.prepareStatement(insertSQL);
-            
-            preparedStatement.setString(1, categoria.getNome());
-            
-            preparedStatement.executeUpdate();
-            connection.commit();
-            
-        } finally {
-            try {
-                if (preparedStatement != null)
-                    preparedStatement.close();
-            } finally {
-                if (connection != null)
-                    DriverManagerConnectionPool.releaseConnection(connection);
-            }
-        }
+        Connection connection = DriverManagerConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
+        
+        preparedStatement.setString(1, categoria.getNome());
+        preparedStatement.executeUpdate();
+        connection.commit();
+        
+        preparedStatement.close();
+        DriverManagerConnectionPool.releaseConnection(connection);
     }
     
     @Override
     public void doUpdate(CategoryBean categoria) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET Nome = ? WHERE ID_Categoria = ?";
-        
-        try {
-            connection = DriverManagerConnectionPool.getConnection();
-            preparedStatement = connection.prepareStatement(updateSQL);
-            
-            preparedStatement.setString(1, categoria.getNome());
-            preparedStatement.setInt(2, categoria.getId());
-            
-            preparedStatement.executeUpdate();
-            connection.commit();
-            
-        } finally {
-            try {
-                if (preparedStatement != null)
-                    preparedStatement.close();
-            } finally {
-                if (connection != null)
-                    DriverManagerConnectionPool.releaseConnection(connection);
-            }
-        }
+       //da fare
     }
     
     @Override
     public boolean doDelete(String code) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        
-        String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE ID_Categoria = ?";
-        
-        try {
-            connection = DriverManagerConnectionPool.getConnection();
-            preparedStatement = connection.prepareStatement(deleteSQL);
-            
-            preparedStatement.setInt(1, Integer.parseInt(code));
-            
-            int result = preparedStatement.executeUpdate();
-            connection.commit();
-            
-            return result > 0;
-            
-        } finally {
-            try {
-                if (preparedStatement != null)
-                    preparedStatement.close();
-            } finally {
-                if (connection != null)
-                    DriverManagerConnectionPool.releaseConnection(connection);
-            }
-        }
+        //da fare
+        return false;
     }
     
     private CategoryBean getCategoria(ResultSet rs) throws SQLException {

@@ -1,9 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.UserBean" %>
 <%
-    UserBean user = (UserBean) session.getAttribute("currentUser");
-    if (user == null || !user.isAdmin()) {
+    UserBean adminUser = (UserBean) session.getAttribute("currentUser");
+    if (adminUser == null || !adminUser.isAdmin()) {
         response.sendRedirect("../login.jsp");
         return;
     }
@@ -12,19 +11,44 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Dashboard</title>
+<title>Dashboard Admin</title>
+<link rel="stylesheet" href="../styles/global.css">
+<link rel="stylesheet" href="../styles/admin.css">
+<link rel="stylesheet" href="../styles/footer.css">
+<link rel="icon" href="../images/apicolturaCoronaLogo.png" type="image/png">
 </head>
 <body>
-<h1>Dashboard</h1>
-    <p>Benvenuto <%= user.getNome() %></p>
-    
-    <ul>
-        <li><a href="categories.jsp">Categorie</a></li>
-        <li><a href="products.jsp">Prodotti</a></li>
 
+<section class="hero">
+<h1>Dashboard Amministratore</h1>
+<p>Benvenuto <%= adminUser.getNome() %></p>
+</section>
+
+<div class="container-admin">
+    <h2>Gestione Admin</h2>
+    <ul>
+        <li><a href="categories.jsp">Gestione Categorie</a></li>
+        <li><a href="products.jsp">Gestione Prodotti</a></li>
+        <li><a href="ordini.jsp">Visualizza Ordini</a></li>
     </ul>
+    
+    <h2>Navigazione Sito</h2>
+    <ul>
+        <li><a href="../index.jsp">Home</a></li>
+        <li><a href="../catalogo.jsp">Catalogo</a></li>
+        <li><a href="../carrello.jsp">Carrello</a></li>
+    </ul>
+    
+    <div style="text-align: center; margin-top: 30px;">
+        <form action="../LogoutServlet" method="post" style="display: inline;">
+            <input type="submit" value="Logout" class="bottone">
+        </form>
+    </div>
+</div>
+
+<footer class="footer">
+<h3>Contattaci</h3>
+</footer>
+
 </body>
 </html>
-
-
-

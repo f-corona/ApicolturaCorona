@@ -1,51 +1,10 @@
-@charset "UTF-8";
-@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
-
 body {
-    margin: 0;
-    font-family: 'Patrick Hand';
     background-color: #f0f8e2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 0;
 }
 
-.auth-container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
+.container-auth {
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 20px;
 }
 
-.auth-form input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 5px;
-    border: 1px solid;
-}
-
-.bottone {
-    background-color: #2e5726;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.bottone:hover {
-    background-color: #1a3a14;
-}
-
-a {
-    color: #2e5726;
-    font-weight: bold;
-    text-decoration: none;
-}

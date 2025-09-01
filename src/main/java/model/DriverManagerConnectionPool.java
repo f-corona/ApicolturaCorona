@@ -15,7 +15,7 @@ public class DriverManagerConnectionPool {
                     try {
                             Class.forName("com.mysql.cj.jdbc.Driver");
                         } catch (ClassNotFoundException e) {
-                            System.out.println("DB driver not found!") ;
+                            System.out.println("DB driver not found!");
                         }
         }
 

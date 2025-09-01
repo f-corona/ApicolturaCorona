@@ -1,7 +1,8 @@
 @charset "UTF-8";
+
 .navbar {
     background-color: white;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eeeeee;
     padding: 15px 20px;
     position: sticky;
     top: 0;
@@ -19,9 +20,8 @@
 .nav-brand {
     font-weight: bold;
     font-size: 24px;
-    color: #2e5726; /* verde scuro */
+    color: #2e5726;
     text-decoration: none;
-    font-family: 'Patrick Hand', cursive;
 }
 
 .navbar nav ul {

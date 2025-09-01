@@ -12,7 +12,6 @@ public class CarrelloBean implements Serializable {
         prodotti = new ArrayList<ProductBean>();
     }
     
-    // Somma prezzo totale carrello (con IVA)
     public double sommaPrezzo() {
         double somma = 0;
         for (int i = 0; i < prodotti.size(); i++) {
@@ -21,28 +20,15 @@ public class CarrelloBean implements Serializable {
         return somma;
     }
     
-    // Vede se il prodotto è presente nel carrello
     public boolean isPresente(ProductBean prod) {
         for (int i = 0; i < prodotti.size(); i++) {
             if (prod.getId() == prodotti.get(i).getId()) {
-                prodotti.get(i).setQuantitaDisponibile(prodotti.get(i).getQuantitaDisponibile() + 1);
                 return true;
             }
         }
         return false;
     }
     
-    // Restituisce indice del prodotto con quell'ID
-    public int indice(int id) {
-        for (int i = 0; i < prodotti.size(); i++) {
-            if (prodotti.get(i).getId() == id) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    
-    // Rimuove prodotto dal carrello
     public void rimuovi(int id) {
         for (int i = 0; i < prodotti.size(); i++) {
             if (prodotti.get(i).getId() == id) {
@@ -52,7 +38,6 @@ public class CarrelloBean implements Serializable {
         }
     }
     
-    // Incrementa quantità di un prodotto specifico
     public void incrementaQuantita(int id) {
         for (ProductBean prodotto : prodotti) {
             if (prodotto.getId() == id) {
@@ -62,7 +47,6 @@ public class CarrelloBean implements Serializable {
         }
     }
     
-    // Decrementa quantità di un prodotto specifico
     public void decrementaQuantita(int id) {
         for (int i = 0; i < prodotti.size(); i++) {
             if (prodotti.get(i).getId() == id) {
@@ -81,25 +65,8 @@ public class CarrelloBean implements Serializable {
         prodotti.add(prod);
     }
     
-    public void deleteProduct(ProductBean prod) {
-        for (int i = 0; i < prodotti.size(); i++) {
-            if (prodotti.get(i).getId() == prod.getId()) {
-                prodotti.remove(i);
-                break;
-            }
-        }
-    }
-
     public void svuotaCarrello() {
         prodotti.clear();
-    }
-    
-    public ProductBean getItemIndex(int i) {
-        return prodotti.get(i);
-    }
-    
-    public int lengthCarrello() {
-        return prodotti.size();
     }
     
     public ArrayList<ProductBean> getProdotti() {
@@ -108,5 +75,13 @@ public class CarrelloBean implements Serializable {
     
     public boolean isEmpty() {
         return prodotti.isEmpty();
+    }
+    
+    public int getQuantitaTotale() {
+        int totale = 0;
+        for (ProductBean prodotto : prodotti) {
+            totale += prodotto.getQuantitaDisponibile();
+        }
+        return totale;
     }
 }
