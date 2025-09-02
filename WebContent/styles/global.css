@@ -1,0 +1,109 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+body {
+     margin: 0;
+    font-family: 'Patrick Hand', cursive;
+    color: #333333;
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero {
+    background-color: #fdfaf0;
+    padding: 20px 0px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 50px;
+    color: #2e5726;
+    margin: 10px 10px;
+}
+
+.hero .logo {
+    max-width: 250px;
+   
+}
+
+.section {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: white;
+}
+
+.section h2 {
+    font-size: 48px;
+    color: #2e5726;
+    margin: 0 0 30px 0;
+}
+
+.bottone {
+    background-color: #2e5726;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.bottone:hover {
+    background-color: #1a3a14;
+}
+
+.container-auth {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    margin: 50px auto;
+}
+
+.form-auth input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    box-sizing: border-box;
+}
+
+.gruppo {
+    margin-bottom: 15px;
+}
+
+.gruppo input,
+.gruppo textarea,
+.gruppo select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cccccc;
+}
+
+a {
+    color: #2e5726;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.errore {
+    display: none;
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.errore-server {
+    color: red;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
