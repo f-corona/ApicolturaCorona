@@ -19,11 +19,15 @@ public class CategoryManagementServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("currentUser") == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+    	HttpSession session = request.getSession(false);
+    	UserBean currentUser = (session != null) ? (UserBean) session.getAttribute("currentUser") : null;
+
+    	if (currentUser == null || !currentUser.isAdmin()) {
+    	    response.sendRedirect("login.jsp");
+    	    return;
+    	}
+
+
         
         UserBean user = (UserBean) session.getAttribute("currentUser");
         if (!user.isAdmin()) {
