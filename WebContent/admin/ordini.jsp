@@ -50,7 +50,7 @@ UserDAO userDAO = new UserDAO();
         <% } %>
     <% } %>
     
-    <p><a href="dashboard.jsp">← Torna al Dashboard</a></p>
+    <p><a href="dashboard.jsp">Torna alla Dashboard</a></p>
 </div>
 
 <footer class="footer">

@@ -12,10 +12,10 @@ public class UserDAO implements DAOInterface<UserBean> {
     
     @Override
     public UserBean doRetrieveByKey(String code) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE ID_Utente = ?";
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID_Utente = ?";
         
         Connection connection = DriverManagerConnectionPool.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(code));
         
         ResultSet rs = preparedStatement.executeQuery();
@@ -33,10 +33,10 @@ public class UserDAO implements DAOInterface<UserBean> {
     }
 
     public UserBean doRetrieveByEmailPassword(String email, String hashedPassword) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE Email = ? AND Password = ?";
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Email = ? AND Password = ?";
         
         Connection connection = DriverManagerConnectionPool.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, email);
         preparedStatement.setString(2, hashedPassword);
 
@@ -61,13 +61,13 @@ public class UserDAO implements DAOInterface<UserBean> {
 
     @Override
     public void doSave(UserBean user) throws SQLException {
-        String insertSQL = "INSERT INTO " + TABLE_NAME + 
+        String sql = "INSERT INTO " + TABLE_NAME + 
                            " (Email, Password, Nome, Cognome, Telefono, IndirizzoSpedizione, " +
                            " CittaSpedizione, CAPSpedizione, ProvinciaSpedizione, IsAdmin) " +
                            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Connection connection = DriverManagerConnectionPool.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         preparedStatement.setString(1, user.getEmail());
         preparedStatement.setString(2, user.getPassword());
@@ -98,10 +98,10 @@ public class UserDAO implements DAOInterface<UserBean> {
     }
     
     public boolean isRegistrato(String email) throws SQLException {
-        String selectSQL = "SELECT COUNT(*) AS numUtenti FROM " + TABLE_NAME + " WHERE Email = ?";
+        String sql = "SELECT COUNT(*) AS numUtenti FROM " + TABLE_NAME + " WHERE Email = ?";
         
         Connection connection = DriverManagerConnectionPool.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, email);
 
         ResultSet rs = preparedStatement.executeQuery();
