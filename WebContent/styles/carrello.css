@@ -1,9 +1,5 @@
 @charset "UTF-8";
 
-.vuoto {
-    text-align: center;
-    padding: 40px;
-}
 
 .prodotto-cart {
     border: 1px solid #dddddd;
@@ -62,7 +58,7 @@
 }
 
 .btn-clear {
-    background-color: orange;
+    background-color: #e88f03;
     color: white;
 }
 

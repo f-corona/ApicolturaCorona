@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="model.CarrelloBean" %>
 <%
 String error = request.getParameter("error");
 String errorMessage = "";
@@ -27,7 +26,7 @@ if (error != null) {
     <title>Login - Apicoltura Corona</title>
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/navbar.css">
-    <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="styles/auth.css">
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="icon" href="images/apicolturaCoronaLogo.png" type="image/png">
     <script src="scripts/validazione-login.js"></script>
@@ -36,10 +35,10 @@ if (error != null) {
 
 <%@ include file="header.jsp" %>
 
-<div class="container-auth">
+<section class="section">
     <h1>Login</h1>
     
-    <form id="form-login" action="LoginServlet" method="post" class="form-auth">
+    <form id="form-login" action="LoginServlet" method="post">
         <input type="text" id="email" name="email" placeholder="Email" required 
                value="<%=request.getParameter("email") != null ? request.getParameter("email") : ""%>">
         <div id="email-error" class="errore"></div>
@@ -48,13 +47,13 @@ if (error != null) {
         <div id="password-error" class="errore"></div>
         
         <% if (!errorMessage.isEmpty()) { %>
-            <div class="errore-server"><%= errorMessage %></div>
+            <div class="errore"><%= errorMessage %></div>
         <% } %>
         
         <input type="submit" value="Login" class="bottone">
     </form>
     <p>Non sei registrato? <a href="register.jsp">Registrati</a></p>
-</div>
+</section>
 
 <%@ include file="footer.jsp" %>
 

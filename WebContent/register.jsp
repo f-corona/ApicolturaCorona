@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="model.CarrelloBean" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -8,7 +7,7 @@
     <title>Registrazione - Apicoltura Corona</title>
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/navbar.css">
-    <link rel="stylesheet" href="styles/register.css">
+    <link rel="stylesheet" href="styles/auth.css">
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="icon" href="images/apicolturaCoronaLogo.png" type="image/png">
     <script src="scripts/validazione-registrazione.js"></script>
@@ -17,9 +16,9 @@
 
 <%@ include file="header.jsp" %>
 
-<div class="container-auth">
+<section class="section">
     <h1>Registrazione</h1>
-    <form id="form-registrazione" action="RegistrazioneServlet" method="post" class="form-auth">
+    <form id="form-registrazione" action="RegistrazioneServlet" method="post">
         <input type="email" id="email" name="email" placeholder="Email" required>
         <div id="email-error" class="errore"></div>
         
@@ -53,7 +52,7 @@
         <input type="submit" value="Registrati" class="bottone">
     </form>
     <p>Hai già un account? <a href="login.jsp">Accedi</a></p>
-</div>
+</section>
 
 <%@ include file="footer.jsp" %>
 

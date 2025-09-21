@@ -1,0 +1,12 @@
+.container-auth.login {
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.container-auth.register {
+    max-width: 350px;
+    margin: 30px auto;
+}
+
+/* colore carino: #fdfaf0 verde chiaro */

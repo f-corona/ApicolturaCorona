@@ -20,7 +20,7 @@
 <%@ include file="header.jsp" %>
 
 <section class="hero">
-    <img src="images/apicolturaCoronaLogo.png" class="logo" alt="Logo Apicoltura Corona">
+    <img src="images/apicolturaCoronaLogo.png" style="max-width:250px;">
     <h1>
         <%
            
@@ -40,7 +40,19 @@
 
 <section class="section">
 <h2>Chi Siamo</h2>
-<p>Ciaone</p>
+  <p>
+    L’<strong>Apicoltura Corona</strong> è un’azienda a conduzione familiare che da anni si dedica con passione all’allevamento delle api e alla produzione di miele e altri prodotti dell’alveare.
+  </p>
+
+  <p>
+    Ci troviamo a Valva, in provincia di Salerno, dove le nostre api vivono in un ambiente collinare circondati da paesaggi stupendi e nelle vicininanze del Parco della Villa d'Ayala-Valva, una delle attrazioni turistiche più belle della Valle del Sele.
+  </p>
+
+  <div>
+      <img src="images/api.jpg" style="width:30%; margin:5px;">
+    <img src="images/miele.jpg" style="width:30%; margin:5px;">
+    <img src="images/bomboniere.jpg" style="width:30%; margin:5px;">
+  </div>
 </section>
 
 <%@ include file="footer.jsp" %>
