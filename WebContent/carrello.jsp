@@ -18,8 +18,8 @@
 <%@ include file="header.jsp" %>
 
 <section class="hero">
-<h1>Il Tuo Carrello</h1>
-<p>Prodotti selezionati per l'acquisto.</p>
+  <h1>Il Tuo Carrello</h1>
+  <p>Prodotti selezionati per l'acquisto.</p>
 </section>
 
 <section class="section">
@@ -36,9 +36,9 @@
     ArrayList<ProductBean> prodotti = carrello.getProdotti();
     for (ProductBean prodotto : prodotti) {
     %>
-    <div class="prodotto-cart">
+    <div class="box-carrello">
         <% if (prodotto.getImmagineURL() != null && !prodotto.getImmagineURL().isEmpty()) { %>
-        <img src="<%= prodotto.getImmagineURL() %>" alt="<%= prodotto.getNome() %>">
+          <img src="<%= prodotto.getImmagineURL() %>" alt="<%= prodotto.getNome() %>">
         <% } %>
 
         <h3><%= prodotto.getNome() %></h3>
@@ -54,15 +54,16 @@
     </div>
     <% } %>
 
-    <div class="totale">
+    <div class="box-carrello">
         <h3>Riepilogo</h3>
         <p><strong>Totale: €<%= carrello.sommaPrezzo() %></strong></p>
 
         <button type="button" class="btn-clear" onclick="svuotaCarrello()">Svuota Carrello</button>
 
         <form action="CheckoutServlet" method="post" style="display:inline;">
-            <input type="submit" value="Procedi all'Ordine" class="btn-buy">
-        </form>
+    <button type="submit" class="btn-buy">Procedi all'Ordine</button>
+</form>
+
     </div>
 
 <% } %>
