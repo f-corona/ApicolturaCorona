@@ -38,9 +38,6 @@
     <p><a href="dashboard.jsp">Torna alla Dashboard</a></p>
 </div>
 
-<footer class="footer">
-<h3>Contattaci</h3>
-</footer>
-
+<%@ include file="../footer.jsp" %>
 </body>
 </html>

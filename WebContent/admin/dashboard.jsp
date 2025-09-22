@@ -24,7 +24,7 @@
 <p>Benvenuto <%= adminUser.getNome() %></p>
 </section>
 
-<div class="container-admin">
+<div class="div-admin">
     <h2>Gestione Admin</h2>
     <ul>
         <li><a href="categories.jsp">Gestione Categorie</a></li>
@@ -39,16 +39,9 @@
         <li><a href="../carrello.jsp">Carrello</a></li>
     </ul>
     
-    <div style="text-align: center; margin-top: 30px;">
-        <form action="../LogoutServlet" method="post" style="display: inline;">
-            <input type="submit" value="Logout" class="bottone">
-        </form>
-    </div>
+    <h2><a href="../LogoutServlet">Logout</a></h2>
 </div>
 
-<footer class="footer">
-<h3>Contattaci</h3>
-</footer>
-
+<%@ include file="../footer.jsp" %>
 </body>
 </html>

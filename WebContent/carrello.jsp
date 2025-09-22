@@ -35,6 +35,11 @@
 <% } else { %>
 
     <h2>Prodotti</h2>
+<% if ("troppi_pezzi".equals(request.getParameter("error"))) { %>
+    <p style="color:red;">
+        Hai richiesto troppi pezzi di <%= request.getParameter("nome") %>.
+    </p>
+<% } %>
 
     <%
     ArrayList<ProductBean> prodotti = carrello.getProdotti();
@@ -69,6 +74,9 @@
     </div>
 
 <% } %>
+
+
+
 </section>
 
 <%@ include file="footer.jsp" %>

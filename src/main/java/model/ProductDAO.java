@@ -37,8 +37,8 @@ public class ProductDAO implements DAOInterface<ProductBean> {
     @Override
     public Collection<ProductBean> doRetrieveAll(String order) throws SQLException {
         List<ProductBean> prodotti = new ArrayList<>();
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE Cancellato = 0";
-        
+        String selectSQL = "SELECT * FROM " + TABLE_NAME;
+       
         Connection connection = DriverManagerConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
         ResultSet rs = preparedStatement.executeQuery();
@@ -102,9 +102,9 @@ public class ProductDAO implements DAOInterface<ProductBean> {
     
     @Override
     public void doUpdate(ProductBean prodotto) throws SQLException {
-    	String updateSQL = "UPDATE " + TABLE_NAME + 
+        String updateSQL = "UPDATE " + TABLE_NAME + 
                 " SET Nome = ?, Descrizione = ?, Prezzo = ?, IVA = ?, " +
-                " QuantitaDisponibile = ?, ImmagineURL = ?, ID_Categoria = ? " +
+                " QuantitaDisponibile = ?, ImmagineURL = ?, ID_Categoria = ?, Cancellato = ? " +
                 " WHERE ID_Prodotto = ?";
 
 Connection connection = DriverManagerConnectionPool.getConnection();
@@ -117,7 +117,8 @@ preparedStatement.setBigDecimal(4, prodotto.getIva());
 preparedStatement.setInt(5, prodotto.getQuantitaDisponibile());
 preparedStatement.setString(6, prodotto.getImmagineURL());
 preparedStatement.setInt(7, prodotto.getIdCategoria());
-preparedStatement.setInt(8, prodotto.getId());
+preparedStatement.setBoolean(8, prodotto.isCancellato()); 
+preparedStatement.setInt(9, prodotto.getId());
 
 preparedStatement.executeUpdate();
 connection.commit();

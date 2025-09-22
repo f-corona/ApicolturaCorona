@@ -15,7 +15,7 @@
     ProductDAO productDAO = new ProductDAO();
     Collection<ProductBean> prodotti = productDAO.doRetrieveAll(null);
 
-    // Controllo se sto modificando un prodotto
+    
     String editId = request.getParameter("edit");
     ProductBean prodottoDaModificare = null;
     if (editId != null) {
@@ -37,8 +37,7 @@
     <h1>Gestione Prodotti</h1>
 </section>
 
-<div class="container-admin">
-
+   
 <form action="../ProductManagementServlet" method="post" class="form-admin">
     <% if (prodottoDaModificare != null) { %>
         <input type="hidden" name="action" value="update">
@@ -49,80 +48,102 @@
         <h3>Inserisci Nuovo Prodotto</h3>
     <% } %>
 
-    <div class="gruppo">
+    <div>
         <label>Nome:</label>
         <input type="text" name="nome" required
-               value="<%= prodottoDaModificare != null ? prodottoDaModificare.getNome() : "" %>">
+               value="<% if (prodottoDaModificare != null) { out.print(prodottoDaModificare.getNome()); } %>">
     </div>
 
-    <div class="gruppo">
+    <div>
         <label>Descrizione:</label>
-        <textarea name="descrizione" rows="3" required><%= prodottoDaModificare != null ? prodottoDaModificare.getDescrizione() : "" %></textarea>
+        <input type="text" name="descrizione" required
+               value="<% if (prodottoDaModificare != null) { out.print(prodottoDaModificare.getDescrizione()); } %>">
     </div>
 
-    <div class="gruppo">
+    <div>
         <label>Prezzo (€):</label>
         <input type="text" name="prezzo" required
-               value="<%= prodottoDaModificare != null ? prodottoDaModificare.getPrezzo() : "" %>">
+               value="<% if (prodottoDaModificare != null) { out.print(prodottoDaModificare.getPrezzo()); } %>">
     </div>
 
-    <div class="gruppo">
+    <div>
         <label>IVA (%):</label>
         <input type="text" name="iva" required
-               value="<%= prodottoDaModificare != null ? prodottoDaModificare.getIva() : "" %>">
+               value="<% if (prodottoDaModificare != null) { out.print(prodottoDaModificare.getIva()); } %>">
     </div>
 
-    <div class="gruppo">
+    <div>
         <label>Quantità disponibile:</label>
         <input type="number" name="quantita" required
-               value="<%= prodottoDaModificare != null ? prodottoDaModificare.getQuantitaDisponibile() : "" %>">
+               value="<% if (prodottoDaModificare != null) { out.print(prodottoDaModificare.getQuantitaDisponibile()); } else { out.print(0); } %>">
     </div>
 
-    <div class="gruppo">
-        <label>Categoria:</label>
-        <select name="categoria" required>
-            <option value="">Seleziona Categoria</option>
-            <% for (CategoryBean categoria : categorie) { %>
-                <option value="<%= categoria.getId() %>" 
-                    <%= prodottoDaModificare != null && prodottoDaModificare.getIdCategoria() == categoria.getId() ? "selected" : "" %>>
-                    <%= categoria.getNome() %>
-                </option>
-            <% } %>
-        </select>
+    <div>
+        <label>Disponibile (0 = SI, 1 = NO):</label>
+        <input type="number" name="cancellato" required
+               value="<% if (prodottoDaModificare != null) { out.print(prodottoDaModificare.isCancellato() ? 1 : 0); } else { out.print(0); } %>">
     </div>
 
-    <div class="gruppo">
+    <div>
+        <label>ID Categoria (1 = Alveare, 2 = Materiale):</label>
+        <input type="number" name="categoria" required
+               value="<% if (prodottoDaModificare != null) { out.print(prodottoDaModificare.getIdCategoria()); } %>">
+    </div>
+
+    <div>
         <label>URL Immagine:</label>
         <input type="text" name="immagineURL"
-               value="<%= prodottoDaModificare != null ? prodottoDaModificare.getImmagineURL() : "" %>">
+               value="<% if (prodottoDaModificare != null) { out.print(prodottoDaModificare.getImmagineURL()); } %>">
     </div>
 
-    <input type="submit" value="<%= prodottoDaModificare != null ? "Aggiorna" : "Inserisci" %>" class="bottone">
+    <input type="submit" value="<% if (prodottoDaModificare != null) { out.print("Aggiorna"); } else { out.print("Inserisci"); } %>" class="bottone">
 
     <% if (prodottoDaModificare != null) { %>
         <a href="products.jsp">Annulla</a>
     <% } %>
 </form>
 
-<h3>Prodotti Esistenti</h3>
-<ul>
-    <% for (ProductBean prodotto : prodotti) { %>
-        <li>
-            <strong><%= prodotto.getNome() %></strong> 
-             -
-            <a href="products.jsp?edit=<%= prodotto.getId() %>">Modifica</a> -  
-            <a href="../ProductManagementServlet?action=delete&id=<%= prodotto.getId() %>" 
-               onclick="return confirm('Vuoi cancellare questo prodotto?')">Cancella</a>
-        </li>
-    <% } %>
-</ul>
 
-<p><a href="dashboard.jsp">Torna alla Dashboard</a></p>
+<div class="div-admin">
+<h3>Prodotti Esistenti</h3>
+<table class="tabellaAdmin">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Prezzo (€)</th>
+            <th>IVA (%)</th>
+            <th>Quantità</th>
+            <th>Disponibile</th>
+            <th>Azioni</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for (ProductBean prodotto : prodotti) { %>
+        <tr>
+            <td><%= prodotto.getNome() %></td>
+            <td><%= prodotto.getPrezzo() %></td>
+            <td><%= prodotto.getIva() %></td>
+            <td><%= prodotto.getQuantitaDisponibile() %></td>
+            <td><% if (prodotto.isCancellato()) { %>
+            			NO
+    							<% } else { %>
+       						SI
+    							<% } %></td>
+            <td>
+                <a href="products.jsp?edit=<%= prodotto.getId() %>">Modifica</a> |
+                <a href="../ProductManagementServlet?action=delete&id=<%= prodotto.getId() %>"
+                   onclick="return confirm('Vuoi cancellare questo prodotto?')">Cancella</a>
+            </td>
+        </tr>
+        <% } %>
+    </tbody>
+</table>
+
+
+
+    <p><a href="dashboard.jsp">Torna alla Dashboard</a></p>
 </div>
 
-<footer class="footer">
-    <h3>Contattaci</h3>
-</footer>
-
+<%@ include file="../footer.jsp" %>
 </body>
 </html>

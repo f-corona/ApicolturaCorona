@@ -50,11 +50,19 @@ public class CheckoutServlet extends HttpServlet {
         ordine.setProdotti(carrello.getProdotti());
 
         try {
+        	 for (ProductBean p : carrello.getProdotti()) {
+                 ProductBean prodottoDB = productDAO.doRetrieveByKey(String.valueOf(p.getId()));
+                 if (p.getQuantitaDisponibile() > prodottoDB.getQuantitaDisponibile()) {
+                	    response.sendRedirect("carrello.jsp?error=troppi_pezzi&nome=" + prodottoDB.getNome());
+                	    return;
+                	}
+             }
+        	 
         	int idOrdine = orderDAO.doSave(ordine);
         	session.setAttribute("ultimoOrdineId", idOrdine);
 
-
-            // Aggiorna la quantità disponibile dei prodotti
+        	
+        	// Aggiorna la quantità disponibile dei prodotti
             for (ProductBean p : carrello.getProdotti()) {
                 ProductBean prodottoDB = productDAO.doRetrieveByKey(String.valueOf(p.getId()));
                 if (prodottoDB != null) {

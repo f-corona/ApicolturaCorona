@@ -1,12 +1,19 @@
-.container-admin {
-    max-width: 600px;
-    margin: 20px auto;
+.div-admin {
+  	margin: 0 auto;
     padding: 20px;
+    text-align: center;
 }
 
 .form-admin {
     border: 1px solid #cccccc;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
+
+}
+
+
+
+
+.tabellaAdmin th,
+.tabellaAdmin td {
+  text-align: center;
+  padding: 5px;
 }
