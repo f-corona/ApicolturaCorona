@@ -3,7 +3,6 @@
 .griglia {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -11,7 +10,6 @@
 
 .prodotto {
     text-align: center;
-    border: 1px solid grey;
     padding: 20px;
     border-radius: 8px;
     background-color: white;

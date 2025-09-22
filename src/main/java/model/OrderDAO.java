@@ -21,7 +21,7 @@ public class OrderDAO {
         preparedStatement.setInt(1, ordine.getIdUtente());
         preparedStatement.setTimestamp(2, ordine.getDataOrdine());
         preparedStatement.setString(3, ordine.getStato());
-        preparedStatement.setDouble(4, ordine.getTotale());
+        preparedStatement.setBigDecimal(4, ordine.getTotale());
         
         preparedStatement.executeUpdate();
         
@@ -48,7 +48,7 @@ public class OrderDAO {
             detailStatement.setInt(1, idOrdine);
             detailStatement.setInt(2, prodotto.getId());
             detailStatement.setInt(3, prodotto.getQuantitaDisponibile());
-            detailStatement.setDouble(4, prodotto.getPrezzoConIva());
+            detailStatement.setBigDecimal(4, prodotto.getPrezzoConIva());
             
             detailStatement.executeUpdate();
         }
@@ -72,7 +72,7 @@ public class OrderDAO {
             ordine.setIdUtente(rs.getInt("ID_Utente"));
             ordine.setDataOrdine(rs.getTimestamp("DataOrdine"));
             ordine.setStato(rs.getString("Stato"));
-            ordine.setTotale(rs.getDouble("Totale"));
+            ordine.setTotale(rs.getBigDecimal("Totale"));
             ordini.add(ordine);
         }
         
@@ -97,7 +97,7 @@ public class OrderDAO {
             ordine.setIdUtente(rs.getInt("ID_Utente"));
             ordine.setDataOrdine(rs.getTimestamp("DataOrdine"));
             ordine.setStato(rs.getString("Stato"));
-            ordine.setTotale(rs.getDouble("Totale"));
+            ordine.setTotale(rs.getBigDecimal("Totale"));
             ordini.add(ordine);
         }
         

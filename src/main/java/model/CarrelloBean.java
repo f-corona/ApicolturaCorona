@@ -1,10 +1,10 @@
 package model;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
-public class CarrelloBean implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class CarrelloBean  {
     
     private ArrayList<ProductBean> prodotti;
     
@@ -12,22 +12,24 @@ public class CarrelloBean implements Serializable {
         prodotti = new ArrayList<ProductBean>();
     }
     
-    public double sommaPrezzo() {
-        double somma = 0;
-        for (int i = 0; i < prodotti.size(); i++) {
-            somma = somma + prodotti.get(i).getPrezzoConIva() * prodotti.get(i).getQuantitaDisponibile();
+   public BigDecimal sommaPrezzo() {
+        BigDecimal somma = BigDecimal.ZERO;
+        for (ProductBean prodotto : prodotti) {
+            BigDecimal prezzoSingolo = prodotto.getPrezzoConIva()
+                                               .multiply(new BigDecimal(prodotto.getQuantitaDisponibile()));
+            somma = somma.add(prezzoSingolo);
         }
-        return somma;
+        return somma.setScale(2, RoundingMode.HALF_UP);
     }
     
-    public boolean isPresente(ProductBean prod) {
-        for (int i = 0; i < prodotti.size(); i++) {
-            if (prod.getId() == prodotti.get(i).getId()) {
-                return true;
-            }
-        }
-        return false;
-    }
+   public boolean isPresente(ProductBean prod) {
+       for (int i = 0; i < prodotti.size(); i++) {
+           if (prod.getId() == prodotti.get(i).getId()) {
+               return true;
+           }
+       }
+       return false;
+   }
     
     public void rimuovi(int id) {
         for (int i = 0; i < prodotti.size(); i++) {

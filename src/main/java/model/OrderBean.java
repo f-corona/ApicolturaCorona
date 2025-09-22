@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.math.BigDecimal;
 
 public class OrderBean implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -11,7 +12,7 @@ public class OrderBean implements Serializable {
     private int idUtente;
     private Timestamp dataOrdine;
     private String stato;
-    private double totale;
+    private BigDecimal totale;
     private ArrayList<ProductBean> prodotti;
     
     public OrderBean() {
@@ -50,11 +51,11 @@ public class OrderBean implements Serializable {
         this.stato = stato;
     }
     
-    public double getTotale() {
+    public BigDecimal getTotale() {
         return totale;
     }
     
-    public void setTotale(double totale) {
+    public void setTotale(BigDecimal totale) {
         this.totale = totale;
     }
     

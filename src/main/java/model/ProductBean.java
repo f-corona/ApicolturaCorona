@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class ProductBean implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -8,8 +10,8 @@ public class ProductBean implements Serializable {
     private int id;
     private String nome;
     private String descrizione;
-    private double prezzo;
-    private double iva;
+    private BigDecimal prezzo;
+    private BigDecimal iva;
     private int quantitaDisponibile;
     private boolean cancellato;
     private String immagineURL;
@@ -17,8 +19,8 @@ public class ProductBean implements Serializable {
     
     public ProductBean() {}
     
-    public ProductBean(int id, String nome, String descrizione, double prezzo, 
-                      double iva, int quantitaDisponibile, boolean cancellato, 
+    public ProductBean(int id, String nome, String descrizione, BigDecimal prezzo, 
+                      BigDecimal iva, int quantitaDisponibile, boolean cancellato, 
                       String immagineURL, int idCategoria) {
         this.id = id;
         this.nome = nome;
@@ -56,19 +58,18 @@ public class ProductBean implements Serializable {
         this.descrizione = descrizione;
     }
     
-    public double getPrezzo() {
+    public BigDecimal getPrezzo() {
         return prezzo;
     }
     
-    public void setPrezzo(double prezzo) {
+    public void setPrezzo(BigDecimal prezzo) {
         this.prezzo = prezzo;
     }
     
-    public double getIva() {
+    public BigDecimal getIva() {
         return iva;
     }
-    
-    public void setIva(double iva) {
+    public void setIva(BigDecimal iva) {
         this.iva = iva;
     }
     
@@ -104,7 +105,13 @@ public class ProductBean implements Serializable {
         this.idCategoria = idCategoria;
     }
     
-    public double getPrezzoConIva() {
-        return prezzo + (prezzo * (iva / 100));
+    public BigDecimal getPrezzoConIva() {
+        if (prezzo == null || iva == null) {
+            return BigDecimal.ZERO;
+        }
+        BigDecimal moltiplicatore = iva.divide(new BigDecimal("100"))
+                                      .add(BigDecimal.ONE);
+        return prezzo.multiply(moltiplicatore)
+                     .setScale(2, RoundingMode.HALF_UP);
     }
 }

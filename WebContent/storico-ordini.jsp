@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.UserBean, model.OrderBean, model.OrderDAO, java.util.Collection, java.text.SimpleDateFormat" %>
+<%@ page import="java.text.DecimalFormat" %>
+<%
+    DecimalFormat df = new DecimalFormat("0.00");
+%>
 <%
     UserBean user = (UserBean) session.getAttribute("currentUser");
     if (user == null) {

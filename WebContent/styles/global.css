@@ -5,7 +5,7 @@ body {
      margin: 0;
     font-family: 'Patrick Hand', cursive;
     color: #333333;
-    background-color: white;
+    background-color: transparent;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -13,27 +13,28 @@ body {
 
 .hero {
     background-color: #fdfaf0;
-    padding: 40px 20px;
+    padding: 20px 20px;
     text-align: center;
 }
 
 .hero h1 {
     font-size: 48px;
     color: #2e5726;
-    margin: 20px;
+    margin: 10px;
 }
 
 .section {
-    background-color: white;
-    padding: 20px 20px;
+    background-color: transparent; 
+    padding: 10px 10px;
     text-align: center;
 }
+
 
 .section h1,
 .section h2 {
     font-size: 32px;
     color: #2e5726;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .section img {
@@ -65,6 +66,7 @@ form {
     max-width: 500px;
     margin: 40px auto;
     text-align: center;
+    
 }
 
 form input {
@@ -93,4 +95,14 @@ p {
     margin-top: 5px;
     text-align: left;
     font-weight: bold; 
+}
+
+.section img {
+  opacity: 0;
+  animation: fadeIn 1.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

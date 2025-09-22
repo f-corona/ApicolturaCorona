@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.ProductBean, java.util.ArrayList" %>
+<%@ page import="java.text.DecimalFormat" %>
+<%
+    DecimalFormat df = new DecimalFormat("0.00");
+%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -54,16 +58,14 @@
     </div>
     <% } %>
 
-    <div class="box-carrello">
-        <h3>Riepilogo</h3>
-        <p><strong>Totale: €<%= carrello.sommaPrezzo() %></strong></p>
+    <div class="box-riepilogo">
+        <h3><strong>Totale: €<%= carrello.sommaPrezzo() %></strong></h3>
 
-        <button type="button" class="btn-clear" onclick="svuotaCarrello()">Svuota Carrello</button>
+        <button type="button" class="btn-remove" onclick="svuotaCarrello()">Svuota Carrello</button>
 
-        <form action="CheckoutServlet" method="post" style="display:inline;">
-    <button type="submit" class="btn-buy">Procedi all'Ordine</button>
-</form>
-
+        <form action="CheckoutServlet" method="post">
+            <button type="submit" class="btn-buy">Procedi all'Ordine</button>
+        </form>
     </div>
 
 <% } %>

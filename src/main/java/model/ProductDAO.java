@@ -87,8 +87,8 @@ public class ProductDAO implements DAOInterface<ProductBean> {
         
         preparedStatement.setString(1, prodotto.getNome());
         preparedStatement.setString(2, prodotto.getDescrizione());
-        preparedStatement.setDouble(3, prodotto.getPrezzo());
-        preparedStatement.setDouble(4, prodotto.getIva());
+        preparedStatement.setBigDecimal(3, prodotto.getPrezzo());
+        preparedStatement.setBigDecimal(4, prodotto.getIva());
         preparedStatement.setInt(5, prodotto.getQuantitaDisponibile());
         preparedStatement.setString(6, prodotto.getImmagineURL());
         preparedStatement.setInt(7, prodotto.getIdCategoria());
@@ -112,8 +112,8 @@ PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
 
 preparedStatement.setString(1, prodotto.getNome());
 preparedStatement.setString(2, prodotto.getDescrizione());
-preparedStatement.setDouble(3, prodotto.getPrezzo());
-preparedStatement.setDouble(4, prodotto.getIva());
+preparedStatement.setBigDecimal(3, prodotto.getPrezzo());
+preparedStatement.setBigDecimal(4, prodotto.getIva());
 preparedStatement.setInt(5, prodotto.getQuantitaDisponibile());
 preparedStatement.setString(6, prodotto.getImmagineURL());
 preparedStatement.setInt(7, prodotto.getIdCategoria());
@@ -148,8 +148,8 @@ DriverManagerConnectionPool.releaseConnection(connection);
         prodotto.setId(rs.getInt("ID_Prodotto"));
         prodotto.setNome(rs.getString("Nome"));
         prodotto.setDescrizione(rs.getString("Descrizione"));
-        prodotto.setPrezzo(rs.getDouble("Prezzo"));
-        prodotto.setIva(rs.getDouble("IVA"));
+        prodotto.setPrezzo(rs.getBigDecimal("Prezzo")); // BigDecimal
+        prodotto.setIva(rs.getBigDecimal("IVA"));       // BigDecimal
         prodotto.setQuantitaDisponibile(rs.getInt("QuantitaDisponibile"));
         prodotto.setCancellato(rs.getBoolean("Cancellato"));
         prodotto.setImmagineURL(rs.getString("ImmagineURL"));

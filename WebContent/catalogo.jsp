@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.ProductBean, model.ProductDAO, java.util.Collection" %>
+<%@ page import="java.text.DecimalFormat" %>
+<%
+    DecimalFormat df = new DecimalFormat("0.00");
+%>
 <!DOCTYPE html>
 <html lang="it">
 <head>

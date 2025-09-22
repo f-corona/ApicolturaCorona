@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.math.BigDecimal;
 
 @WebServlet("/ProductManagementServlet")
 public class ProductManagementServlet extends HttpServlet {
@@ -45,8 +46,9 @@ public class ProductManagementServlet extends HttpServlet {
                 ProductBean prodotto = new ProductBean();
                 prodotto.setNome(request.getParameter("nome"));
                 prodotto.setDescrizione(request.getParameter("descrizione"));
-                prodotto.setPrezzo(Double.parseDouble(request.getParameter("prezzo")));
-                prodotto.setIva(Double.parseDouble(request.getParameter("iva")));
+                prodotto.setPrezzo(new BigDecimal(request.getParameter("prezzo")));
+                prodotto.setIva(new BigDecimal(request.getParameter("iva")));
+
                 prodotto.setQuantitaDisponibile(Integer.parseInt(request.getParameter("quantita")));
                 prodotto.setImmagineURL(request.getParameter("immagineURL"));
                 prodotto.setIdCategoria(Integer.parseInt(request.getParameter("categoria")));
