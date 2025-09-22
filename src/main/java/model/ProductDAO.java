@@ -149,8 +149,8 @@ DriverManagerConnectionPool.releaseConnection(connection);
         prodotto.setId(rs.getInt("ID_Prodotto"));
         prodotto.setNome(rs.getString("Nome"));
         prodotto.setDescrizione(rs.getString("Descrizione"));
-        prodotto.setPrezzo(rs.getBigDecimal("Prezzo")); // BigDecimal
-        prodotto.setIva(rs.getBigDecimal("IVA"));       // BigDecimal
+        prodotto.setPrezzo(rs.getBigDecimal("Prezzo"));
+        prodotto.setIva(rs.getBigDecimal("IVA"));
         prodotto.setQuantitaDisponibile(rs.getInt("QuantitaDisponibile"));
         prodotto.setCancellato(rs.getBoolean("Cancellato"));
         prodotto.setImmagineURL(rs.getString("ImmagineURL"));

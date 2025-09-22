@@ -39,9 +39,7 @@ public class CategoryDAO implements DAOInterface<CategoryBean> {
         List<CategoryBean> categorie = new ArrayList<>();
         String selectSQL = "SELECT * FROM " + TABLE_NAME;
         
-        if (order != null && !order.isEmpty()) {
-            selectSQL += " ORDER BY " + order;
-        }
+
         
         Connection connection = DriverManagerConnectionPool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);

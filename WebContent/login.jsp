@@ -18,6 +18,13 @@ if (error != null) {
     }
 }
 %>
+<%
+  if (session.getAttribute("currentUser") != null) {
+      response.sendRedirect(request.getContextPath() + "/index.jsp");
+      return;
+  }
+%>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>

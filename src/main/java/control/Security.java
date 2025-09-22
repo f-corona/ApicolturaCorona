@@ -1,12 +1,13 @@
 package control;
 
 
-import java.util.regex.Pattern;
+//import java.util.regex.Pattern;
 
 public class Security {
 	
-	private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#+=\\(\\)\\^?&])[A-Za-z\\d$@$!%*#+=\\(\\)\\^?&]{3,}$");
+	/*private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#+=\\(\\)\\^?&])[A-Za-z\\d$@$!%*#+=\\(\\)\\^?&]{3,}$");
 	
+	*/
 	// Metodo per generare l'hash di una stringa (L07)
 	public static String toHash(String password) {
         String hashString = null;
@@ -23,7 +24,7 @@ public class Security {
         return hashString;
     }
     
-	public static boolean validateEmail(String email) {
+	/*public static boolean validateEmail(String email) {
     	if (email == null || email.isEmpty()) return false; 
         return Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$").matcher(email).matches();
     }
@@ -32,5 +33,6 @@ public class Security {
         if (password == null || password.isEmpty()) return false;
         return PASSWORD_PATTERN.matcher(password).matches();
     }
+    */
 
 }
