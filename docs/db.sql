@@ -26,10 +26,7 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   PRIMARY KEY (`ID_Categoria`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- Dump dei dati della tabella apicoltura_db.categoria: ~2 rows (circa)
-REPLACE INTO `categoria` (`ID_Categoria`, `Nome`) VALUES
-	(1, 'Prodotti dell\'alveare'),
-	(2, 'Materiale apistico');
+-- Dump dei dati della tabella apicoltura_db.categoria: dati omessi per sicurezza
 
 -- Dump della struttura di tabella apicoltura_db.dettaglio_ordine
 CREATE TABLE IF NOT EXISTS `dettaglio_ordine` (
@@ -43,16 +40,7 @@ CREATE TABLE IF NOT EXISTS `dettaglio_ordine` (
   CONSTRAINT `dettaglio_ordine_ibfk_2` FOREIGN KEY (`ID_Prodotto`) REFERENCES `prodotto` (`ID_Prodotto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- Dump dei dati della tabella apicoltura_db.dettaglio_ordine: ~8 rows (circa)
-REPLACE INTO `dettaglio_ordine` (`ID_Ordine`, `ID_Prodotto`, `QuantitaAcquistata`, `PrezzoAcquisto`) VALUES
-	(3, 1, 1, 3.85),
-	(3, 3, 1, 11.55),
-	(4, 2, 1, 6.05),
-	(5, 2, 1, 6.05),
-	(6, 2, 1, 6.05),
-	(6, 3, 3, 11.55),
-	(7, 4, 1, 3.85),
-	(7, 7, 1, 10.98);
+-- Dump dei dati della tabella apicoltura_db.dettaglio_ordine: dati omessi per sicurezza
 
 -- Dump della struttura di tabella apicoltura_db.ordine
 CREATE TABLE IF NOT EXISTS `ordine` (
@@ -66,13 +54,7 @@ CREATE TABLE IF NOT EXISTS `ordine` (
   CONSTRAINT `ordine_ibfk_1` FOREIGN KEY (`ID_Utente`) REFERENCES `utente` (`ID_Utente`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- Dump dei dati della tabella apicoltura_db.ordine: ~5 rows (circa)
-REPLACE INTO `ordine` (`ID_Ordine`, `ID_Utente`, `DataOrdine`, `Stato`, `Totale`) VALUES
-	(3, 3, '2025-09-05 09:13:10', 'Confermato', 15.40),
-	(4, 3, '2025-09-15 15:00:13', 'Confermato', 6.05),
-	(5, 1, '2025-09-15 15:07:15', 'Confermato', 6.05),
-	(6, 3, '2025-09-22 10:53:23', 'Confermato', 40.70),
-	(7, 3, '2025-09-22 10:54:27', 'Confermato', 14.83);
+-- Dump dei dati della tabella apicoltura_db.ordine: dati omessi per sicurezza
 
 -- Dump della struttura di tabella apicoltura_db.prodotto
 CREATE TABLE IF NOT EXISTS `prodotto` (
@@ -90,15 +72,7 @@ CREATE TABLE IF NOT EXISTS `prodotto` (
   CONSTRAINT `prodotto_ibfk_1` FOREIGN KEY (`ID_Categoria`) REFERENCES `categoria` (`ID_Categoria`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- Dump dei dati della tabella apicoltura_db.prodotto: ~7 rows (circa)
-REPLACE INTO `prodotto` (`ID_Prodotto`, `Nome`, `Descrizione`, `Prezzo`, `IVA`, `QuantitaDisponibile`, `Cancellato`, `ImmagineURL`, `ID_Categoria`) VALUES
-	(1, 'Miele Millefiori di Primavera 250g', 'Ottimo miele', 3.50, 10.00, 199, 0, 'images/products/miele_primavera_250.jpg', 1),
-	(2, 'Miele Millefiori di Primavera 500g', 'Miele', 5.50, 10.00, 197, 0, 'images/products/miele_primavera_500.jpg', 1),
-	(3, 'Miele Millefiori di Primavera 1000g', 'Miele', 10.50, 10.00, 196, 0, 'images/products/miele_primavera_1000.jpg', 1),
-	(4, 'Miele Millefiori di Estate 250g', 'Miele', 3.50, 10.00, 199, 0, 'images/products/miele_estate_250.jpg', 1),
-	(5, 'Miele Millefiori di Estate 500g', 'Miele', 5.50, 10.00, 200, 0, 'images/products/miele_estate_500.jpg', 1),
-	(6, 'Miele Millefiori di Estate 1000g', 'Miele', 10.50, 10.00, 200, 0, 'images/products/miele_estate_1000.jpg', 1),
-	(7, 'Affumicatore in acciaio', 'Classico affumicatore ma con struttura e fornace in acciaio e gabbia di protezione.\r\n', 9.00, 22.00, 29, 0, 'images/products/affumicatore.png', 2);
+-- Dump dei dati della tabella apicoltura_db.prodotto: dati omessi per sicurezza
 
 -- Dump della struttura di tabella apicoltura_db.utente
 CREATE TABLE IF NOT EXISTS `utente` (
@@ -117,11 +91,7 @@ CREATE TABLE IF NOT EXISTS `utente` (
   UNIQUE KEY `Email` (`Email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- Dump dei dati della tabella apicoltura_db.utente: ~3 rows (circa)
-REPLACE INTO `utente` (`ID_Utente`, `Email`, `Password`, `Nome`, `Cognome`, `Telefono`, `IndirizzoSpedizione`, `CittaSpedizione`, `CAPSpedizione`, `ProvinciaSpedizione`, `IsAdmin`) VALUES
-	(1, 'admin@apicolturacorona.it', '89a174917c5bedc27e1b44f0cd53e1764017583ee24b82617a1ad113f7e98a3f8581ed4403eb2acf0995b47de2a1d31d06e7e2ccdf6f051472358ae8d0747ec9', 'Francesco', 'Corona', '', 'Via della Laurea', 'Fisciano', '00000', 'SA', 1),
-	(2, 'david@parenzo.it', 'f6611c6a99d125329f1c07142ea79750d7b7fcb95e3d1e6d55dbd57aaa3651224ffc0f04322d0183f0c61acbbb4a7e3701ee39c1e763ad9aa15e408f3c867813', 'David1', 'Parenzo', '', 'Via della Zanzara', 'Valva', '84020', 'SA', 0),
-	(3, 'franco@unisa.it', 'fde0bf645471669a4d2bf54f94c527f0e8a35b9cbf9e0ac92f3632eeb9200db7dd56d4466f4881666824285ab105145bb2dba6fecd612a08029095ade18e20b3', 'Franco', 'Unisa', '', 'Via dei CFU', 'Valva', '84020', 'SA', 0);
+-- Dump dei dati della tabella apicoltura_db.utente: dati omessi per sicurezza
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

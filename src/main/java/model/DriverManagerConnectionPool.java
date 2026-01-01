@@ -21,17 +21,24 @@ public class DriverManagerConnectionPool {
 
         // crea e restituisce la connessione al db
         private static Connection createDBConnection() throws SQLException {
-            Connection newConnection = null;
-            String db = "apicoltura_db";
-            String username = "root";
-            String password = "tsw_unisa";
+            // Configurare host, porta, nome database, username e password tramite variabili d'ambiente o file esterno.
+            String dbUrl = requireEnv("APICOLTURA_DB_URL");
+            String username = requireEnv("APICOLTURA_DB_USERNAME");
+            String password = requireEnv("APICOLTURA_DB_PASSWORD");
 
-            newConnection = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/"+db, username, password);
+            Connection newConnection = DriverManager.getConnection(dbUrl, username, password);
             newConnection.setAutoCommit(false);
 
             return newConnection;
             }
+
+        private static String requireEnv(String key) throws SQLException {
+            String value = System.getenv(key);
+            if (value == null || value.isBlank()) {
+                throw new SQLException("Missing required environment variable: " + key);
+            }
+            return value;
+        }
 
         // ottiene una connessione dalla lista
         public static synchronized Connection getConnection() throws SQLException {
